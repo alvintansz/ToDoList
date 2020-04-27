@@ -1,0 +1,116 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
+		
+	</head>
+
+    <body>
+    <style>
+       html,
+body,
+pre,
+code,
+kbd,
+samp {
+  font-family: "Press Start 2P";
+	-webkit-font-smoothing: none;
+}
+
+body {
+  background: #7FB5B5;
+  padding: 20px;
+}
+
+#app {
+  background: #fff;
+  border-radius: 10px;
+	box-shadow: 8px 8px 20px #666;
+  padding: 20px;
+  transition: all 0.2s;
+}
+
+li {
+  margin: 8px 0;
+}
+
+del {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.padding {
+  padding: 1px 7px 2px;
+}
+
+.flex {
+  display: flex;
+}
+
+.space {
+  flex-grow: 1;
+}
+
+/* Uses NES.CSS for Styling */
+
+    </style>
+
+<!-- core style only -->
+<link href="https://unpkg.com/nes.css/css/nes-core.min.css" rel="stylesheet" />
+
+<link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+
+<div id="app">
+  <h1>{{title}}:</h1>
+		<input type="text" class="nes-input" placeholder="Add task..." v-on:keyup.enter="addTodo">
+	<span>&nbsp</span>
+	<ul>
+		<li v-for="todo in todos" class="flex"> 
+			<label>
+				<input type="checkbox" class="nes-checkbox" v-model="todo.done">
+				<span>&nbsp</span>
+			</label>
+			<del v-if="todo.done">{{todo.text}}</del>
+			<span v-else>{{todo.text}}</span>
+			<div class="space"></div>
+			<button class="nes-btn is-error padding" @click="removeTodo(todo.id)">X</button>
+		</li>
+	</ul>
+</div>
+
+        <script>
+            new Vue({
+  el: "#app",
+  data: {
+		title: 'To Do',
+		//To Do List Creation
+  	todos: [
+			{ text: 'Create Vue To Do List', done: true, id: Date.now()}, 
+			{ text: 'Master All JS Frameworks', done: false, id: Date.now() + 1},
+			{ text: 'World Domination', done: false, id: Date.now() + 2}
+		]
+  },
+  methods: {
+		// Add item to to do list
+  	addTodo(event) {
+			// Gets text from input
+			const text = event.target.value
+			// Pushes new to do item to list, done set to false by default
+			this.todos.push({text, done: false, id: Date.now()})
+			// Clears Input text
+			event.target.value = ''
+		},
+		removeTodo(id) {
+			// Removes specified item from list 
+			this.todos = this.todos.filter(todo => todo.id !== id)
+		},
+		check(todo) {
+			// set todo.done value to opposite of what it currently is
+			todo.done = !todo.done
+		}
+  }
+});
+
+// Based on Vue.js Tutorial by Hugo Mar - https://dev.to/hugoliconv/lets-build-a-todo-app-using-vuejs-52in 
+        </script>
+    </body>
+</html>
